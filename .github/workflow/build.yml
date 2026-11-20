@@ -1,0 +1,26 @@
+name: Build Switch homebrew starter
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: devkitpro/devkita64:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build NRO
+        run: |
+          export DEVKITPRO=/opt/devkitpro
+          make
+
+      - name: Upload NRO
+        uses: actions/upload-artifact@v4
+        with:
+          name: SwitchHomebrewStarter
+          path: '*.nro'
